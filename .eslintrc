@@ -1,0 +1,17 @@
+{
+  "extends": ["google", "eslint:recommended"],
+  "rules": {
+    "no-unused-vars": "warn",
+    "semi": "off",
+    "arrow-parens": "off",
+    "comma-dangle": "off",
+    "require-jsdoc": "off",
+    "eol-last": "off"
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "parser": "babel-eslint"
+}
