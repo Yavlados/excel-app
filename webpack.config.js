@@ -49,7 +49,7 @@ module.exports = {
     extensions: ['.js', '.css'],
     alias: {
       '@styles': path.resolve(__dirname, 'src', 'scss'),
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'src')
     },
   },
   output: {
@@ -62,6 +62,8 @@ module.exports = {
   devServer: {
     port: 4200,
     hot: isDev,
+    contentBase: path.resolve(__dirname, 'src'),
+    watchContentBase: true,
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -102,7 +104,7 @@ module.exports = {
         test: /\.js$/,
         exclude: path.resolve(__dirname, 'node_modules'),
         use: jsLoaders(),
-      },
+      }
     ],
   },
 
