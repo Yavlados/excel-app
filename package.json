@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Pure JavaScript Excel Application",
   "main": "webpack.config.js",
-  "dependencies": {},
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@babel/polyfill": "^7.10.1",
@@ -17,6 +19,7 @@
     "eslint": "^7.3.1",
     "eslint-config-google": "^0.14.0",
     "eslint-loader": "^4.0.2",
+    "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
