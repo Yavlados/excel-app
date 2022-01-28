@@ -2,11 +2,16 @@
   "extends": ["google", "eslint:recommended"],
   "rules": {
     "no-unused-vars": "warn",
-    "semi": "off",
+    "semi": ["error", "never"],
     "arrow-parens": "off",
     "comma-dangle": "off",
     "require-jsdoc": "off",
-    "eol-last": "off"
+    "eol-last": "off",
+    "indent": "off",
+    "linebreak-style": "off",
+    "no-debugger": "off",
+    "no-trailing-spaces": "off",
+    "operator-linebreak": "off"
   },
   "env": {
     "es6": true,

@@ -1,74 +1,79 @@
-const path = require('path')
+const path = require("path");
 // Development plugins
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
-const HtmlPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+const HtmlPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // Production plugins
-const CssOptimizeAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
+const CssOptimizeAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
-const isDev = process.env.NODE_ENV === 'development'
-const isProd = !isDev
-const pathToBundle = path.resolve(__dirname, 'dist')
+const isDev = process.env.NODE_ENV === "development";
+const isProd = !isDev;
+const pathToBundle = path.resolve(__dirname, "dist");
 
 const optimization = () => {
   const config = {
     splitChunks: {
-      chunks: 'all',
+      chunks: "all",
     },
-  }
+  };
   if (isProd) {
-    config.minimizer = [
-      new TerserPlugin(),
-      new CssOptimizeAssetsPlugin(),
-    ]
+    config.minimizer = [new TerserPlugin(), new CssOptimizeAssetsPlugin()];
   }
-  return config
-}
+  return config;
+};
 
-isDev ? console.log('isDev') : console.log('isProd')
+isDev ? console.log("isDev") : console.log("isProd");
 
-const filename = extension => isDev ? `bundle.${extension}` :
-     `bundle.[hash].${extension}`
+const filename = (extension) =>
+  isDev ? `bundle.${extension}` : `bundle.[hash].${extension}`;
 const jsLoaders = () => {
-  const loaders = [{
-    loader: 'babel-loader',
-    options: {
-      presets: ['@babel/preset-env']
+  const loaders = [
+    {
+      loader: "babel-loader",
+      options: {
+        presets: ["@babel/preset-env"],
+        plugins: ["@babel/plugin-proposal-class-properties"],
+      },
     },
-  }]
-  if (isDev) loaders.push('eslint-loader')
-  return loaders
-}
+  ];
+  if (isDev) {
+    loaders.push({
+      loader: "eslint-loader",
+    });
+  }
+  return loaders;
+};
 
 module.exports = {
-  context: path.resolve(__dirname, 'src'),
-  mode: 'development',
+  context: path.resolve(__dirname, "src"),
+  mode: "development",
   resolve: {
-    extensions: ['.js', '.css'],
+    extensions: [".js", ".css"],
     alias: {
-      '@styles': path.resolve(__dirname, 'src', 'scss'),
-      '@': path.resolve(__dirname, 'src')
+      "@styles": path.resolve(__dirname, "src", "scss"),
+      "@": path.resolve(__dirname, "src"),
+      "@core": path.resolve(__dirname, "src", "core"),
     },
   },
   output: {
     path: pathToBundle,
-    filename: filename('js'),
+    filename: filename("js"),
   },
-  entry: ['@babel/polyfill', './index.js'],
+  entry: ["@babel/polyfill", "./index.js"],
   optimization: optimization(),
-  devtool: isDev ? 'source-map' : false,
+  devtool: isDev ? "source-map" : false,
   devServer: {
     port: 4200,
     hot: isDev,
-    contentBase: path.resolve(__dirname, 'src'),
+    contentBase: path.resolve(__dirname, "src"),
     watchContentBase: true,
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlPlugin({
-      template: 'index.html',
+      template: "index.html",
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
@@ -77,35 +82,36 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src', 'favicon.ico'),
+          from: path.resolve(__dirname, "src", "favicon.ico"),
           to: pathToBundle,
         },
       ],
     }),
     new MiniCssExtractPlugin({
-      filename: filename('css'),
+      filename: filename("css"),
     }),
   ],
   module: {
     rules: [
       {
         test: /\.s[ac]ss$/,
-        use: [{
-          loader: MiniCssExtractPlugin.loader,
-          options: {
-            hmr: isDev,
-            reloadAll: true,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: isDev,
+              reloadAll: true,
+            },
           },
-        },
-        'css-loader',
-        'sass-loader'],
+          "css-loader",
+          "sass-loader",
+        ],
       },
       {
         test: /\.js$/,
-        exclude: path.resolve(__dirname, 'node_modules'),
+        exclude: path.resolve(__dirname, "node_modules"),
         use: jsLoaders(),
-      }
+      },
     ],
   },
-
-}
+};
